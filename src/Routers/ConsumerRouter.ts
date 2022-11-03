@@ -29,7 +29,7 @@ class ConsumerRouter{
             } );
             //获取当前账户
             const current = await new Promise( (resolve,reject)=>{
-                const sql = `SELECT * FROM wab_customer_user WHERE id = ? AND black_status = 0`;
+                const sql = `SELECT * FROM wab_customer_user WHERE id = ? AND black_status = 0 AND active_status = 1`;
                 conn.query( sql,[message.userId],(err:any,dataList:any[])=>err ? resolve([]): resolve(dataList) )
             } ) as any[];
             if( current.length < 1 ){
@@ -91,7 +91,7 @@ class ConsumerRouter{
             } );
             //获取当前账户
             const current = await new Promise( (resolve,reject)=>{
-                const sql = `SELECT * FROM wab_customer_user WHERE id = ? AND black_status = 0`;
+                const sql = `SELECT * FROM wab_customer_user WHERE id = ? AND black_status = 0 AND active_status = 1`;
                 conn.query( sql,[message.userId],(err:any,dataList:any[])=>err ? resolve([]): resolve(dataList) )
             } ) as any[];
             if( current.length < 1 ){
