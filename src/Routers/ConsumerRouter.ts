@@ -13,8 +13,6 @@ class ConsumerRouter{
 
     @ExpressTimerDecorator
     async setAwardList(req:any,res:any){
-        const withMysql = new WithMysql();
-        const conn = await withMysql.connectHandle() as any;
         const rabb = new WithRabbitmq()
         const message = await rabb.consumer("usdtEventList");
         if( !message )  return {
@@ -22,6 +20,8 @@ class ConsumerRouter{
             log: "设置USDT奖励列表",
             message: "未定义消息",
         }
+        const withMysql = new WithMysql();
+        const conn = await withMysql.connectHandle() as any;
         try{
             //开启事务
             await new Promise( (resolve,reject)=>{
@@ -75,8 +75,6 @@ class ConsumerRouter{
 
     @ExpressTimerDecorator
     async setAwardListBak(req:any,res:any){
-        const withMysql = new WithMysql();
-        const conn = await withMysql.connectHandle() as any;
         const rabb = new WithRabbitmq()
         const message = await rabb.consumer("usdtEventListBak");
         if( !message )  return {
@@ -84,6 +82,8 @@ class ConsumerRouter{
             log: "设置USDT奖励列表",
             message: "未定义消息",
         }
+        const withMysql = new WithMysql();
+        const conn = await withMysql.connectHandle() as any;
         try{
             //开启事务
             await new Promise( (resolve,reject)=>{
@@ -138,8 +138,6 @@ class ConsumerRouter{
     //消费奖励消息
     @ExpressTimerDecorator
     async setAward(req:any,res:any){
-        const withMysql = new WithMysql();
-        const conn = await withMysql.connectHandle() as any;
         const rabb = new WithRabbitmq()
         const message = await rabb.consumer("usdtEvent");
         if( !message )  return {
@@ -147,6 +145,8 @@ class ConsumerRouter{
             log: "设置USDT奖励",
             message: "未定义消息",
         }
+        const withMysql = new WithMysql();
+        const conn = await withMysql.connectHandle() as any;
         try{
             //校验账户是否存在
             //开启事务
@@ -289,8 +289,6 @@ class ConsumerRouter{
     //消费奖励消息
     @ExpressTimerDecorator
     async setAwardBak(req:any,res:any){
-        const withMysql = new WithMysql();
-        const conn = await withMysql.connectHandle() as any;
         const rabb = new WithRabbitmq()
         const message = await rabb.consumer("usdtEventBak");
         if( !message )  return {
@@ -298,6 +296,8 @@ class ConsumerRouter{
             log: "设置USDT奖励",
             message: "未定义消息",
         }
+        const withMysql = new WithMysql();
+        const conn = await withMysql.connectHandle() as any;
         try{
             //校验账户是否存在
             //开启事务
