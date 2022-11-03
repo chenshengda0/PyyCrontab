@@ -35,6 +35,7 @@ module.exports = {
             RABBITMQ_HOST: JSON.stringify("/"),
             
             MYSQL_HOST: JSON.stringify("8.218.67.15"),
+            
             //MYSQL_HOST: JSON.stringify("8.210.244.134"),
             MYSQL_USER: JSON.stringify("dev"),//replicater
             MYSQL_PORT: JSON.stringify("3306"),
