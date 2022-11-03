@@ -24,7 +24,7 @@ class SystemRouter{
             return {
                 code: 200,
                 message: "SUCCESS",
-                data: data,
+                data,
             }
         }catch(err:any){
             return {
