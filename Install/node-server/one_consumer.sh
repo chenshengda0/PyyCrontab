@@ -2,9 +2,16 @@
 step=1 #间隔的秒数，不能大于60
 for (( i = 0; i < 60; i=(i+step) )); do
 {
-    echo "consumer"
-    date
-} &
+    #消费奖励列表消息
+    curl http://127.0.0.1:9527/consumer/sendAwardUserList
+    curl http://127.0.0.1:9527/consumer/sendAwardUserList
+    curl http://127.0.0.1:9527/consumer/sendAwardUserList
+
+    #发送奖励
+    curl http://127.0.0.1:9527/consumer/sendAward
+    curl http://127.0.0.1:9527/consumer/sendAward
+    curl http://127.0.0.1:9527/consumer/sendAward
+}
     sleep $step
 
 done

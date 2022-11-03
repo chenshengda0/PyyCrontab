@@ -3,6 +3,7 @@ version: '3'
 services:
 
   dev-haproxy:
+    hostname: dex-haproxy
     build:
       context: ./
       dockerfile: haproxy/Dockerfile
@@ -10,12 +11,31 @@ services:
       - RABBITMQ_DEFAULT_USER=dream 
       - RABBITMQ_DEFAULT_PASS=231510622abc
       - PATH=$PATH:/opt/rabbitmq/sbin:/usr/local/bin/:/bin
-    network_mode: "host"
+    ports:
+      - 5670:5670
+      - 35672:35672
+      - 35674:35674
+      - 9999:9999
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dex-quantitative
 
   dev-node:
+    hostname: dex-node
     build:
       context: ./
       dockerfile: node-server/Dockerfile
     volumes:
       - ./build:/opt/build
-    network_mode: "host"
+    ports:
+      - 9527:9527
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dex-quantitative
+
+networks:
+  dex-quantitative:
+    driver:
+      bridge
