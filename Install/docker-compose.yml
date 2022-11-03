@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  dev-haproxy:
+    build:
+      context: ./
+      dockerfile: haproxy/Dockerfile
+    environment:
+      - RABBITMQ_DEFAULT_USER=dream 
+      - RABBITMQ_DEFAULT_PASS=231510622abc
+      - PATH=$PATH:/opt/rabbitmq/sbin:/usr/local/bin/:/bin
+    network_mode: "host"
+
+  dev-node:
+    build:
+      context: ./
+      dockerfile: node-server/Dockerfile
+    volumes:
+      - ./build:/opt/build
+    network_mode: "host"

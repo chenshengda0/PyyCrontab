@@ -1,0 +1,36 @@
+listen rabbitmq_admin
+    bind 0.0.0.0:35672
+    mode http
+    timeout client 3h
+    timeout server 3h
+    timeout connect 3h
+    server dev-master    127.0.0.1:15672
+
+listen rabbitmq_cluster
+    bind 0.0.0.0:5670
+    mode tcp
+    timeout client 3h
+    timeout server 3h
+    timeout connect 3h
+    balance roundrobin
+    server dev-master     127.0.0.1:5672      check inter 5000 rise 2 fall 3
+
+listen rabbitmq_stomp
+    bind 0.0.0.0:35674
+    mode tcp
+    timeout client 3h
+    timeout server 3h
+    timeout connect 3h
+    balance roundrobin
+    server dev-master    127.0.0.1:15674     check inter 5000 rise 2 fall 3
+
+listen private_monitoring
+    bind 0.0.0.0:9999
+    mode http
+    option httplog
+    timeout client 3h
+    timeout server 3h
+    timeout connect 3h
+    stats enable
+    stats uri /stats
+    stats refresh 5s
