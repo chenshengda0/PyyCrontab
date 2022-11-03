@@ -4,7 +4,7 @@ for (( i = 0; i < 60; i=(i+step) )); do
 {
     echo "publish"
     date
-} & 
+}
     sleep $step
 
 done
