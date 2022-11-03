@@ -14,11 +14,17 @@ class SystemRouter{
 
     @ExpressTimerDecorator
     async test(req:any,res:any){
+        const withMysql = new WithMysql();
+        const conn = await withMysql.connectHandle() as any;
         try{
+            const data = await new Promise( (resolve,reject)=>{
+                const sql = "SELECT * FROM wab_customer_user where 1";
+                conn.query( sql,[],(err:any,dataList:any[])=>err? reject(err) : resolve(dataList) )
+            } ) as any[];
             return {
                 code: 200,
                 message: "SUCCESS",
-                data: {}
+                data: data,
             }
         }catch(err:any){
             return {

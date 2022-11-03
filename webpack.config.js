@@ -34,11 +34,11 @@ module.exports = {
             RABBITMQ_FRAMEMAX: JSON.stringify(0),
             RABBITMQ_HOST: JSON.stringify("/"),
             
-            MYSQL_HOST: JSON.stringify("8.218.67.15"),
+            MYSQL_HOST: JSON.stringify("127.0.0.1"),
             //MYSQL_HOST: JSON.stringify("8.210.244.134"),
-            MYSQL_USER: JSON.stringify("dev"),//replicater
+            MYSQL_USER: JSON.stringify("root"),//replicater
             MYSQL_PORT: JSON.stringify("3306"),
-            MYSQL_PASSWORD: JSON.stringify("XL@gDih#k&J$P7&*"),
+            MYSQL_PASSWORD: JSON.stringify("da440bc551b25055"),
             MYSQL_DATABASE: JSON.stringify("ppy"),
             MYSQL_CHARSET: JSON.stringify("utf8mb4"),
             
