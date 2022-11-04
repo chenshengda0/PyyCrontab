@@ -176,7 +176,7 @@ class ConsumerRouter{
             }
             //查询推荐有效会员数量
             const sons = await new Promise( (resolve,reject)=>{
-                const sql = "SELECT count(1) as sonsCount FROM wab_customer_user WHERE invite_id = ? AND black_status = 0";
+                const sql = "SELECT count(1) as sonsCount FROM wab_customer_user WHERE invite_id = ? AND black_status = 0 AND active_status = 1";
                 conn.query( sql,[message.toUserId], (err:any,dataList:any[])=>err ? reject(err) : resolve( dataList ) )
             } ) as any[]
             //查询当前账户奖励
@@ -327,7 +327,7 @@ class ConsumerRouter{
             }
             //查询推荐有效会员数量
             const sons = await new Promise( (resolve,reject)=>{
-                const sql = "SELECT count(1) as sonsCount FROM wab_customer_user WHERE invite_id = ? AND black_status = 0";
+                const sql = "SELECT count(1) as sonsCount FROM wab_customer_user WHERE invite_id = ? AND black_status = 0 AND active_status = 1";
                 conn.query( sql,[message.toUserId], (err:any,dataList:any[])=>err ? reject(err) : resolve( dataList ) )
             } ) as any[]
             //查询当前账户奖励
@@ -440,6 +440,95 @@ class ConsumerRouter{
         }
     }
 
+    //发送奖励
+    @ExpressTimerDecorator
+    async sendSetLogList(req:any,res:any){
+        const rabb = new WithRabbitmq()
+        const message = await rabb.consumer("sendSetLogList");
+        if( !message )  return {
+            code: 400,
+            log: "重发USDT奖励",
+            message: "未定义消息",
+        }
+        const withMysql = new WithMysql();
+        const conn = await withMysql.connectHandle() as any;
+        try{
+            //开启事务
+            await new Promise( (resolve,reject)=>{
+                conn.beginTransaction( (err:any) => err ? reject(err) : resolve("开启事务成功") );
+            } );
+            //校验账号是否有未处理的记录
+            const LogList = await new Promise( (resolve,reject)=>{
+                const sql = `SELECT * FROM wab_customer_promotion WHERE status = 0 AND to_address = ?`;
+                conn.query( sql,[message.userphone],(err:any,dataList:any[])=> err ? reject(err) : resolve(dataList) );
+            } ) as any[];
+            if( LogList.length <= 0 ){
+                conn.rollback();
+                return {
+                    code: 400,
+                    message: "未查询到账户",
+                    data: {}
+                }
+            }
+            //检查账户是否存在
+            const current = await new Promise( (resolve,reject)=>{
+                const sql = `SELECT * FROM wab_customer_user WHERE phone = ? AND active_status = 1 AND black_status = 0`;
+                conn.query( sql,[message.userphone],(err:any,dataList:any[])=>err ? reject(err) : resolve(dataList) )
+            } ) as any[];
+            if( current.length < 1 ){
+                conn.rollback();
+                return {
+                    code: 400,
+                    message: "未查询到账户",
+                    data: {}
+                }
+            }
+            //查询推荐有效会员数量
+            const sons = await new Promise( (resolve,reject)=>{
+                const sql = "SELECT count(1) as sonsCount FROM wab_customer_user WHERE invite_id = ? AND black_status = 0 AND active_status = 1";
+                conn.query( sql,[current[0].id], (err:any,dataList:any[])=>err ? reject(err) : resolve( dataList ) )
+            } ) as any[];
+            if( parseInt(sons[0].sonsCount) < 2 ){
+                conn.rollback();
+                return {
+                    code: 400,
+                    message: "推荐人不满足条件",
+                    data: {}
+                }
+            }
+            //逐条发送奖励
+            for( const log of LogList ){
+                //修改日志状态
+                await new Promise( (resolve,reject)=>{
+                    const sql = `UPDATE wab_customer_promotion SET status = 1 WHERE id = ?`;
+                    conn.query( sql,[log.id],(err:any,dataList:any[])=> err ? reject(err) : resolve(dataList) )
+                } )
+                //修改账户usdt
+                await new Promise( (resolve,reject)=>{
+                    const sql = `UPDATE wab_customer_user SET usdt_num = usdt_num + ? WHERE id = ?`;
+                    conn.query( sql,[log.commission, current[0].id],(err:any,dataList:any[]) => err ? reject( err ) : resolve( dataList ) )
+                } )
+            }
+            conn.commit();
+            return {
+                code: 200,
+                message: "SUCCESS",
+                data: {}
+            }
+        }catch(err:any){
+            conn.rollback();
+            await rabb.publish("sendSetLogList",message);
+            return {
+                code: 400,
+                message: err.message,
+                data: {}
+            }
+        }finally{
+            conn.release()
+            console.log( "重发USDT奖励" )
+        }
+    }
+
 }
 
 const consumer = new ConsumerRouter();
@@ -448,4 +537,5 @@ router.get("/sendAwardUserList",async(req:any,res:any,next:any)=> await middlewa
 router.get("/sendAwardUserListBak",async(req:any,res:any,next:any)=> await middleware.checkAuth(req,res,next),async(req:any,res:any)=>await consumer.setAwardListBak(req,res) );
 router.get("/sendAward",async(req:any,res:any,next:any)=> await middleware.checkAuth(req,res,next),async(req:any,res:any)=>await consumer.setAward(req,res) );
 router.get("/sendAwardBak",async(req:any,res:any,next:any)=> await middleware.checkAuth(req,res,next),async(req:any,res:any)=>await consumer.setAwardBak(req,res) );
+router.get("/sendSetLogList",async(req:any,res:any,next:any)=> await middleware.checkAuth(req,res,next),async(req:any,res:any)=>await consumer.sendSetLogList(req,res) );
 export default router;

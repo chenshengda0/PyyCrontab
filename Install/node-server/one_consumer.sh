@@ -13,6 +13,9 @@ for (( i = 0; i < 60; i=(i+step) )); do
 
     curl http://127.0.0.1:9527/consumer/sendAwardBak
 
+    #检查账户是否已激活两人，重复发送奖励
+    curl http://127.0.0.1:9527/consumer/sendSetLogList
+
 } &
     sleep $step
 
