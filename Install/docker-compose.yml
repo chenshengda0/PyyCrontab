@@ -36,7 +36,7 @@ services:
       - dex-quantitative
 
   dev-node-consumer:
-    hostname: dex-node
+    hostname: dex-node-consumer
     build:
       context: ./
       dockerfile: node-server-consumer/Dockerfile
