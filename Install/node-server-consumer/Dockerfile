@@ -1,10 +1,10 @@
 FROM node
 RUN apt -y update && apt -y upgrade && apt install -y man vim iproute2 xz-utils wget gcc git g++ sudo  inetutils-ping net-tools curl screen cron
 WORKDIR /opt/build
-COPY node-server/init-start.sh /opt/init-start.sh
-COPY node-server/one_publish.sh /opt/one_publish.sh
-COPY node-server/one_consumer.sh /opt/one_consumer.sh
-COPY node-server/restart.sh /opt/restart.sh
+COPY node-server-consumer/init-start.sh /opt/init-start.sh
+COPY node-server-consumer/one_publish.sh /opt/one_publish.sh
+COPY node-server-consumer/one_consumer.sh /opt/one_consumer.sh
+COPY node-server-consumer/restart.sh /opt/restart.sh
 RUN sed -i -e "s/\r//" /opt/init-start.sh
 RUN sed -i -e "s/\r//" /opt/one_publish.sh
 RUN sed -i -e "s/\r//" /opt/one_consumer.sh
