@@ -4,11 +4,14 @@ WORKDIR /opt/build
 COPY node-server/init-start.sh /opt/init-start.sh
 COPY node-server/one_publish.sh /opt/one_publish.sh
 COPY node-server/one_consumer.sh /opt/one_consumer.sh
+COPY node-server/restart.sh /opt/restart.sh
 RUN sed -i -e "s/\r//" /opt/init-start.sh
 RUN sed -i -e "s/\r//" /opt/one_publish.sh
 RUN sed -i -e "s/\r//" /opt/one_consumer.sh
+RUN sed -i -e "s/\r//" /opt/restart.sh
 RUN chmod -R 777 /opt/init-start.sh
 RUN chmod -R 777 /opt/one_publish.sh
 RUN chmod -R 777 /opt/one_consumer.sh
+RUN chmod -R 777 /opt/restart.sh
 EXPOSE 9527
 CMD date >> /home/test.md && /opt/init-start.sh && while true;do sleep 3000;done
