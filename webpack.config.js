@@ -34,7 +34,7 @@ module.exports = {
             RABBITMQ_FRAMEMAX: JSON.stringify(0),
             RABBITMQ_HOST: JSON.stringify("/"),
             
-            MYSQL_HOST: JSON.stringify("8.218.67.15"),
+            MYSQL_HOST: JSON.stringify("host.docker.internal"),
             
             //MYSQL_HOST: JSON.stringify("8.210.244.134"),
             MYSQL_USER: JSON.stringify("dev"),//replicater

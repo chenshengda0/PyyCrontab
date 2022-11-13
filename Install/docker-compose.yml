@@ -35,6 +35,18 @@ services:
     networks:
       - dex-quantitative
 
+  dev-node-consumer:
+    hostname: dex-node
+    build:
+      context: ./
+      dockerfile: node-server-consumer/Dockerfile
+    volumes:
+      - ./build:/opt/build
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    networks:
+      - dex-quantitative
+
 networks:
   dex-quantitative:
     driver:
