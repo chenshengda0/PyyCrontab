@@ -230,13 +230,17 @@ class ConsumerRouter{
                                         create_time, 
                                         level, 
                                         invite_address, 
-                                        status
-                                    ) VALUES (0,?,?,NOW(),?,?,0)`;
+                                        status,
+                                        old_usdt_num, 
+                                        cur_usdt_num
+                                    ) VALUES (0,?,?,NOW(),?,?,0,?,?)`;
                         conn.query( sql,[
                             current[0].phone,
                             count,
                             message.currentLevel,
-                            message.fromUserPhone
+                            message.fromUserPhone,
+                            current[0].usdt_num,
+                            current[0].usdt_num + count,
                         ],(err:any,dataList:any[])=>err ? reject(err) : resolve( dataList ) )
                     } )
                 }
@@ -255,13 +259,18 @@ class ConsumerRouter{
                                     create_time, 
                                     level, 
                                     invite_address, 
-                                    status
-                                ) VALUES (0,?,?,NOW(),?,?,1)`;
+                                    status, 
+                                    old_usdt_num, 
+                                    cur_usdt_num
+                                ) VALUES (0,?,?,NOW(),?,?,1,?,?)`;
                     conn.query( sql,[
                         current[0].phone,
                         count,
                         message.currentLevel,
-                        message.fromUserPhone
+                        message.fromUserPhone,
+                        current[0].phone,
+                        current[0].usdt_num,
+                        current[0].usdt_num,
                     ],(err:any,dataList:any[])=>err ? reject(err): resolve(dataList) )
                 } )
             }
@@ -499,9 +508,17 @@ class ConsumerRouter{
             //逐条发送奖励
             for( const log of LogList ){
                 //修改日志状态
+                const preState = await new Promise( (resolve,reject)=>{
+                    const sql = `SELECT * FROM wab_customer_user WHERE phone = ? AND active_status = 1 AND black_status = 0`;
+                    conn.query( sql,[message.userphone],(err:any,dataList:any[])=>err ? reject(err) : resolve(dataList) )
+                } ) as any[]
                 await new Promise( (resolve,reject)=>{
-                    const sql = `UPDATE wab_customer_promotion SET status = 1 WHERE id = ?`;
-                    conn.query( sql,[log.id],(err:any,dataList:any[])=> err ? reject(err) : resolve(dataList) )
+                    const sql = `UPDATE wab_customer_promotion SET status = 1,old_usdt_num = ?, cur_usdt_num = ? + commission WHERE id = ?`;
+                    conn.query( sql,[
+                        log.id,
+                        preState[0].usdt_num,
+                        preState[0].usdt_num
+                    ],(err:any,dataList:any[])=> err ? reject(err) : resolve(dataList) )
                 } )
                 //修改账户usdt
                 await new Promise( (resolve,reject)=>{
