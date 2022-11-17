@@ -272,7 +272,6 @@ class ConsumerRouter{
                         count,
                         message.currentLevel,
                         message.fromUserPhone,
-                        current[0].phone,
                         current[0].usdt_num,
                         current[0].usdt_num + count,
                     ],(err:any,dataList:any[])=>err ? reject(err): resolve(dataList) )
