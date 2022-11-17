@@ -211,13 +211,17 @@ class ConsumerRouter{
                                         create_time, 
                                         level, 
                                         invite_address, 
-                                        status
-                                    ) VALUES (0,?,?,NOW(),?,?,1)`;
+                                        status,
+                                        old_usdt_num, 
+                                        cur_usdt_num
+                                    ) VALUES (0,?,?,NOW(),?,?,1,?,?)`;
                         conn.query( sql,[
                             current[0].phone,
                             count,
                             message.currentLevel,
-                            message.fromUserPhone
+                            message.fromUserPhone,
+                            current[0].usdt_num,
+                            current[0].usdt_num + count,
                         ],(err:any,dataList:any[])=>err ? reject(err): resolve(dataList) )
                     } )
                 }else{
@@ -270,7 +274,7 @@ class ConsumerRouter{
                         message.fromUserPhone,
                         current[0].phone,
                         current[0].usdt_num,
-                        current[0].usdt_num,
+                        current[0].usdt_num + count,
                     ],(err:any,dataList:any[])=>err ? reject(err): resolve(dataList) )
                 } )
             }
