@@ -518,9 +518,9 @@ class ConsumerRouter{
                 await new Promise( (resolve,reject)=>{
                     const sql = `UPDATE wab_customer_promotion SET status = 1,old_usdt_num = ?, cur_usdt_num = ? + commission WHERE id = ?`;
                     conn.query( sql,[
-                        log.id,
                         preState[0].usdt_num,
-                        preState[0].usdt_num
+                        preState[0].usdt_num,
+                        log.id,
                     ],(err:any,dataList:any[])=> err ? reject(err) : resolve(dataList) )
                 } )
                 //修改账户usdt
