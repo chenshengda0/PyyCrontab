@@ -40,7 +40,7 @@ module.exports = {
             MYSQL_USER: JSON.stringify("dev"),//replicater
             MYSQL_PORT: JSON.stringify("3306"),
             MYSQL_PASSWORD: JSON.stringify("XL@gDih!k&J$P7&*"),
-            MYSQL_DATABASE: JSON.stringify("ppy"),
+            MYSQL_DATABASE: JSON.stringify("pyy"),
             MYSQL_CHARSET: JSON.stringify("utf8mb4"),
             
             REACT_SERVER_DEBUG: JSON.stringify(true),
