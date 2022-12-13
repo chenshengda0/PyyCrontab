@@ -34,13 +34,13 @@ module.exports = {
             RABBITMQ_FRAMEMAX: JSON.stringify(0),
             RABBITMQ_HOST: JSON.stringify("/"),
             
-            MYSQL_HOST: JSON.stringify("host.docker.internal"),
+            MYSQL_HOST: JSON.stringify("47.243.110.64"),
             
             //MYSQL_HOST: JSON.stringify("8.210.244.134"),
             MYSQL_USER: JSON.stringify("pyy"),//replicater
             MYSQL_PORT: JSON.stringify("3306"),
-            MYSQL_PASSWORD: JSON.stringify("65iaN8T5ASEFSz6z"),
-            MYSQL_DATABASE: JSON.stringify("blockchain"),
+            MYSQL_PASSWORD: JSON.stringify("XL@gDih!k&J$P7&*"),
+            MYSQL_DATABASE: JSON.stringify("dev"),
             MYSQL_CHARSET: JSON.stringify("utf8mb4"),
             
             REACT_SERVER_DEBUG: JSON.stringify(true),
