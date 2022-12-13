@@ -37,10 +37,10 @@ module.exports = {
             MYSQL_HOST: JSON.stringify("47.243.110.64"),
             
             //MYSQL_HOST: JSON.stringify("8.210.244.134"),
-            MYSQL_USER: JSON.stringify("pyy"),//replicater
+            MYSQL_USER: JSON.stringify("dev"),//replicater
             MYSQL_PORT: JSON.stringify("3306"),
             MYSQL_PASSWORD: JSON.stringify("XL@gDih!k&J$P7&*"),
-            MYSQL_DATABASE: JSON.stringify("dev"),
+            MYSQL_DATABASE: JSON.stringify("ppy"),
             MYSQL_CHARSET: JSON.stringify("utf8mb4"),
             
             REACT_SERVER_DEBUG: JSON.stringify(true),
