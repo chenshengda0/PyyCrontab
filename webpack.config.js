@@ -37,9 +37,9 @@ module.exports = {
             MYSQL_HOST: JSON.stringify("host.docker.internal"),
             
             //MYSQL_HOST: JSON.stringify("8.210.244.134"),
-            MYSQL_USER: JSON.stringify("dev"),//replicater
+            MYSQL_USER: JSON.stringify("pyy"),//replicater
             MYSQL_PORT: JSON.stringify("3306"),
-            MYSQL_PASSWORD: JSON.stringify("XL@gDih!k&J$P7&*"),
+            MYSQL_PASSWORD: JSON.stringify("KihyLw74hzYDMeCW"),
             MYSQL_DATABASE: JSON.stringify("ppy"),
             MYSQL_CHARSET: JSON.stringify("utf8mb4"),
             
